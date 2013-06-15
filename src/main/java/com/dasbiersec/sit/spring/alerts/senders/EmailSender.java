@@ -3,6 +3,7 @@ package com.dasbiersec.sit.spring.alerts.senders;
 import com.dasbiersec.sit.spring.dto.AlertMessageDTO;
 import com.dasbiersec.sit.spring.model.InventoryItem;
 import com.dasbiersec.sit.spring.util.ConfigProperties;
+import org.springframework.stereotype.Component;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -10,6 +11,7 @@ import javax.mail.internet.MimeMessage;
 import java.util.List;
 import java.util.Properties;
 
+@Component
 public class EmailSender implements Sender
 {
 	final private String userName = ConfigProperties.getProperty("alert.smtp.username");

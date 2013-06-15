@@ -1,23 +1,28 @@
-package com.dasbiersec.sit.spring;
+package com.dasbiersec.sit.spring.service;
 
 import com.dasbiersec.sit.spring.alerts.AlertItemQueue;
 import com.dasbiersec.sit.spring.dto.AlertMessageDTO;
 import com.dasbiersec.sit.spring.model.Alert;
 import com.dasbiersec.sit.spring.model.Scraper;
-import com.dasbiersec.sit.spring.service.AlertServices;
-import com.dasbiersec.sit.spring.service.ScraperService;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ScraperScheduleService
 {
+    @Autowired
     private AlertServices alertServices;
 
+    @Autowired
     private ScraperService scraperService;
 
 	private Logger log = Logger.getLogger(getClass());
 
+    @Scheduled(fixedRate = 300000)
 	private void process()
 	{
 		List<Scraper> scrapers = scraperService.getAllScrapers();

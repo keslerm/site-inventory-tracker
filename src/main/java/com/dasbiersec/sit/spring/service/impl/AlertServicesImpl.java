@@ -8,6 +8,7 @@ import com.dasbiersec.sit.spring.model.InventoryItem;
 import com.dasbiersec.sit.spring.service.AlertServices;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+@Service
 public class AlertServicesImpl implements AlertServices
 {
 	private final Logger log = Logger.getLogger(getClass());

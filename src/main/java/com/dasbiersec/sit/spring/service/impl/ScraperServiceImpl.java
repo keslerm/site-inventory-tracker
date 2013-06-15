@@ -7,6 +7,7 @@ import com.dasbiersec.sit.spring.model.Scraper;
 import com.dasbiersec.sit.spring.parsers.Parser;
 import com.dasbiersec.sit.spring.service.ScraperService;
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -14,6 +15,7 @@ import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class ScraperServiceImpl implements ScraperService
 {
 	private Logger log = Logger.getLogger(getClass());
