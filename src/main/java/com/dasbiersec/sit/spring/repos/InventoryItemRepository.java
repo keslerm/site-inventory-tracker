@@ -7,4 +7,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface InventoryItemRepository extends CrudRepository<InventoryItem, Long>
 {
+    public InventoryItem getInventoryItemByUrl(String url);
+    public Iterable<InventoryItem> getInventoryItemByIdentifier(String identifier);
+    public Iterable<InventoryItem> findItemsByName(String name);
 }

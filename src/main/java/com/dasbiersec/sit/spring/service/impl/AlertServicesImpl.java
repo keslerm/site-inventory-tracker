@@ -5,14 +5,12 @@ import com.dasbiersec.sit.spring.alerts.senders.EmailSender;
 import com.dasbiersec.sit.spring.dto.AlertMessageDTO;
 import com.dasbiersec.sit.spring.model.Alert;
 import com.dasbiersec.sit.spring.model.InventoryItem;
+import com.dasbiersec.sit.spring.repos.AlertRepository;
 import com.dasbiersec.sit.spring.service.AlertServices;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,18 +21,21 @@ public class AlertServicesImpl implements AlertServices
 	private final Logger log = Logger.getLogger(getClass());
 
     @Autowired
-	EmailSender emailSender;
+	private EmailSender emailSender;
 
-	@PersistenceContext(unitName = "ScraperPU")
-	private EntityManager em;
+    @Autowired
+    private AlertRepository alertRepository;
 
 	@Override
 	public List<Alert> getAlerts()
 	{
-		Query query = em.createQuery("select a from Alert a");
-		List<Alert> alert = query.getResultList();
+        Iterable<Alert> alerts = alertRepository.findAll();
+        List<Alert> alertList = new ArrayList<Alert>();
 
-		return alert;
+        for (Alert alert : alerts)
+            alertList.add(alert);
+
+		return alertList;
 	}
 
 	@Override

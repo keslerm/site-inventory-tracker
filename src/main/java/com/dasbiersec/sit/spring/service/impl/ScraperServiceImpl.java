@@ -5,13 +5,13 @@ import com.dasbiersec.sit.spring.datasources.DataSource;
 import com.dasbiersec.sit.spring.model.InventoryItem;
 import com.dasbiersec.sit.spring.model.Scraper;
 import com.dasbiersec.sit.spring.parsers.Parser;
+import com.dasbiersec.sit.spring.repos.InventoryItemRepository;
+import com.dasbiersec.sit.spring.repos.ScraperRepository;
 import com.dasbiersec.sit.spring.service.ScraperService;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,21 +20,20 @@ public class ScraperServiceImpl implements ScraperService
 {
 	private Logger log = Logger.getLogger(getClass());
 
-	@PersistenceContext(unitName = "ScraperPU")
-	private EntityManager em;
+    @Autowired
+    private InventoryItemRepository inventoryItemRepository;
+
+    @Autowired
+    private ScraperRepository scraperRepository;
 
 	@Override
 	public void save(InventoryItem item)
 	{
-		Query query = em.createQuery("select i from InventoryItem i where i.url = :url");
-		query.setParameter("url", item.getUrl());
 
-		List<InventoryItem> temp = query.getResultList();
+        InventoryItem existing = inventoryItemRepository.getInventoryItemByUrl(item.getUrl());
 
-		if (temp != null && temp.size() > 0)
+		if (existing != null)
 		{
-			InventoryItem existing = temp.get(0);
-
 			Boolean isUpdated = false;
 
 			if (existing.isInStock() == false && item.isInStock() == true)
@@ -48,15 +47,14 @@ public class ScraperServiceImpl implements ScraperService
 			existing.setUrl(item.getUrl());
 
 			log.info("Updating item " + existing.getId());
-			em.flush();
+
+            inventoryItemRepository.save(existing);
 
 			if (isUpdated)
 				AlertItemQueue.add(existing);
 
 			return;
 		}
-
-		em.persist(item);
 
 		if (item.isInStock() == true)
 			AlertItemQueue.add(item);
@@ -76,38 +74,45 @@ public class ScraperServiceImpl implements ScraperService
 
 	public List<Scraper> getAllScrapers()
 	{
-		Query query = em.createQuery("select s from Scraper s");
+        Iterable<Scraper> scraperList = scraperRepository.findAll();
 
-		List<Scraper> scraperList = query.getResultList();
+        List<Scraper> scrapers = new ArrayList<Scraper>();
 
-		return scraperList;
+        for (Scraper sc : scraperList)
+            scrapers.add(sc);
+
+		return scrapers;
 
 	}
 
 	public Scraper getScraper(Long id)
 	{
-		Scraper scraper = em.find(Scraper.class, id);
+        Scraper scraper = scraperRepository.findOne(id);
 		return scraper;
 	}
 
 	public List<InventoryItem> getItemsByIdentifier(String identifier)
 	{
-		log.info("Fetching items for identifier - " + identifier);
-		Query query = em.createQuery("select i from InventoryItem i where i.identifier = :identifier order by i.inStock desc, i.updateDate desc");
-		query.setParameter("identifier", identifier);
+        Iterable<InventoryItem> items = inventoryItemRepository.getInventoryItemByIdentifier(identifier);
 
-		List<InventoryItem> items = query.getResultList();
+        List<InventoryItem> itemList = new ArrayList<InventoryItem>();
 
-		return items;
+        for (InventoryItem item : items)
+            itemList.add(item);
+
+		return itemList;
 	}
 
 	public List<InventoryItem> getAllItems()
 	{
-		Query query = em.createQuery("select i from InventoryItem i order by i.inStock desc, i.updateDate desc");
+        Iterable<InventoryItem> items = inventoryItemRepository.findAll();
 
-		List<InventoryItem> items = query.getResultList();
+        List<InventoryItem> itemList = new ArrayList<InventoryItem>();
 
-		return items;
+        for (InventoryItem item : items)
+            itemList.add(item);
+
+        return itemList;
 	}
 
 	@Override
@@ -158,12 +163,14 @@ public class ScraperServiceImpl implements ScraperService
 	public List<InventoryItem> findItems(String name)
 	{
 		log.info("Got search request for - " + name);
-		
-		Query query = em.createQuery("SELECT i from InventoryItem i where upper(i.name) like :query");
-		query.setParameter("query", "%" + name.toUpperCase() + "%");
 
-		List<InventoryItem> items = query.getResultList();
+        Iterable<InventoryItem> items = inventoryItemRepository.findItemsByName(name);
 
-		return items;
+        List<InventoryItem> itemList = new ArrayList<InventoryItem>();
+
+        for (InventoryItem item : items)
+            itemList.add(item);
+
+        return itemList;
 	}
 }
