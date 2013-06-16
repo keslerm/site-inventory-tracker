@@ -46,7 +46,17 @@ public class InventoryItem implements Serializable
 		updateDate = new Date();
 	}
 
-	public Date getUpdateDate()
+    public void setId(Long id)
+    {
+        this.id = id;
+    }
+
+    public Boolean getInStock()
+    {
+        return inStock;
+    }
+
+    public Date getUpdateDate()
 	{
 		return updateDate;
 	}

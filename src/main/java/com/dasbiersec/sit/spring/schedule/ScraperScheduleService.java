@@ -1,9 +1,11 @@
-package com.dasbiersec.sit.spring.service;
+package com.dasbiersec.sit.spring.schedule;
 
 import com.dasbiersec.sit.spring.alerts.AlertItemQueue;
 import com.dasbiersec.sit.spring.dto.AlertMessageDTO;
 import com.dasbiersec.sit.spring.model.Alert;
 import com.dasbiersec.sit.spring.model.Scraper;
+import com.dasbiersec.sit.spring.service.AlertServices;
+import com.dasbiersec.sit.spring.service.ScraperService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;

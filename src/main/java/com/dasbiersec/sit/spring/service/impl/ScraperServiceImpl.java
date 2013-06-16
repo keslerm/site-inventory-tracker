@@ -10,6 +10,8 @@ import com.dasbiersec.sit.spring.repos.ScraperRepository;
 import com.dasbiersec.sit.spring.service.ScraperService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -55,6 +57,8 @@ public class ScraperServiceImpl implements ScraperService
 
 			return;
 		}
+
+        inventoryItemRepository.save(item);
 
 		if (item.isInStock() == true)
 			AlertItemQueue.add(item);
@@ -141,7 +145,7 @@ public class ScraperServiceImpl implements ScraperService
 		try
 		{
 			// intialize scraper class
-			Parser parser = (Parser) Class.forName("com.dasbiersec.sit.parsers." + scraper.getParser()).newInstance();
+			Parser parser = (Parser) Class.forName("com.dasbiersec.sit.spring.parsers." + scraper.getParser()).newInstance();
 			parser.setDataSource(new DataSource(scraper.getUrl()));
 			parser.setIdentifier(scraper.getIdentifier());
 

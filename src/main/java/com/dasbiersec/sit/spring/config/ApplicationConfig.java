@@ -10,8 +10,6 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
-import org.springframework.scheduling.TaskScheduler;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -24,7 +22,7 @@ import java.util.Properties;
 @EnableJpaRepositories("com.dasbiersec.sit.spring.repos")
 @EnableTransactionManagement
 @Import(ConfigProperties.class)
-//@ImportResource("classpath:security-config.xml")
+@ImportResource("classpath:schedule-spring.xml")
 public class ApplicationConfig
 {
 	@Value("${jdbc.driver}") private String jdbcDriver;
