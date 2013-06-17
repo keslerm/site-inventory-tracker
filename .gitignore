@@ -18,6 +18,6 @@ config/*
 *.iml
 data/*
 build/rev.number
-*config.properties*
+config.properties*
 .hg*
-*database.properties
+database.properties
