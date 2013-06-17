@@ -8,6 +8,5 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
 
-    <context:component-scan base-package="com.dasbiersec.sit.spring.schedule" />
     <task:annotation-driven />
 </beans>

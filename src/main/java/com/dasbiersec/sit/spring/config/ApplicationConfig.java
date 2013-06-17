@@ -18,7 +18,7 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
-@ComponentScan({"com.dasbiersec.sit.spring.service", "com.dasbiersec.sit.spring.alerts.senders"})
+@ComponentScan({"com.dasbiersec.sit.spring.service", "com.dasbiersec.sit.spring.alerts.senders", "com.dasbiersec.sit.spring.schedule"})
 @EnableJpaRepositories("com.dasbiersec.sit.spring.repos")
 @EnableTransactionManagement
 @Import(ConfigProperties.class)
